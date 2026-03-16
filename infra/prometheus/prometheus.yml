@@ -1,0 +1,54 @@
+# Prometheus scrape configuration for FlowMatch Recommendation System
+# Scrapes all application services exposing /metrics endpoints.
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  scrape_timeout: 10s
+
+scrape_configs:
+  # ── Prometheus self-monitoring ──────────────────────────────────────────────
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # ── Application Services ───────────────────────────────────────────────────
+  - job_name: "api-gateway"
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["api-gateway:8000"]
+        labels:
+          service: "api-gateway"
+          tier: "gateway"
+
+  - job_name: "event-collector"
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["event-collector:8001"]
+        labels:
+          service: "event-collector"
+          tier: "ingestion"
+
+  - job_name: "user-feature-svc"
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["user-feature-svc:8002"]
+        labels:
+          service: "user-feature-svc"
+          tier: "feature-store"
+
+  - job_name: "ranking-svc"
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["ranking-svc:8003"]
+        labels:
+          service: "ranking-svc"
+          tier: "ml"
+
+  - job_name: "llm-augment-svc"
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["llm-augment-svc:8004"]
+        labels:
+          service: "llm-augment-svc"
+          tier: "augmentation"

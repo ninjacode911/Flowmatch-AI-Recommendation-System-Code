@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ranking-svc
+  namespace: recsys
+  labels:
+    app: ranking-svc
+    tier: ml
+    app.kubernetes.io/part-of: flowmatch-recsys
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ranking-svc
+  template:
+    metadata:
+      labels:
+        app: ranking-svc
+        tier: ml
+    spec:
+      containers:
+        - name: ranking-svc
+          image: flowmatch-recsys/ranking-svc:latest
+          ports:
+            - containerPort: 8003
+          envFrom:
+            - configMapRef:
+                name: recsys-config
+            - secretRef:
+                name: recsys-secrets
+          readinessProbe:
+            httpGet:
+              path: /rank/health
+              port: 8003
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ranking-svc
+  namespace: recsys
+spec:
+  selector:
+    app: ranking-svc
+  ports:
+    - port: 8003
+      targetPort: 8003

@@ -1,0 +1,116 @@
+# ========================
+# Python
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# ========================
+# Virtual Environments
+# ========================
+.venv/
+venv/
+env/
+ENV/
+
+# ========================
+# IDE
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ========================
+# Environment & Secrets
+# ========================
+.env
+.env.local
+.env.production
+*.pem
+*.key
+credentials.json
+
+# ========================
+# Docker
+# ========================
+docker-compose.override.yml
+
+# ========================
+# Data & Models (large files)
+# ========================
+data/raw/
+data/processed/
+data/synthetic/*.parquet
+data/synthetic/*.csv
+data/synthetic/*.npy
+data/synthetic/*.json
+data/synthetic/*.jsonl
+!data/synthetic/.gitkeep
+models/artifacts/
+*.onnx
+*.pt
+*.pth
+*.pkl
+*.joblib
+*.h5
+
+# ========================
+# Next.js
+# ========================
+frontend/.next/
+frontend/node_modules/
+Vercel Folder/node_modules/
+Vercel Folder/.next/
+
+# ========================
+# Claude Code
+# ========================
+.claude/
+
+# ========================
+# MLflow
+# ========================
+mlruns/
+mlartifacts/
+
+# ========================
+# Logs
+# ========================
+logs/
+*.log
+
+# ========================
+# OS
+# ========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ========================
+# Notebooks
+# ========================
+.ipynb_checkpoints/
+
+# ========================
+# Testing
+# ========================
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# ========================
+# Terraform
+# ========================
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars

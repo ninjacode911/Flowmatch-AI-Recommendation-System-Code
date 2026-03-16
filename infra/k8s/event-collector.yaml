@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-collector
+  namespace: recsys
+  labels:
+    app: event-collector
+    tier: ingestion
+    app.kubernetes.io/part-of: flowmatch-recsys
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: event-collector
+  template:
+    metadata:
+      labels:
+        app: event-collector
+        tier: ingestion
+    spec:
+      containers:
+        - name: event-collector
+          image: flowmatch-recsys/event-collector:latest
+          ports:
+            - containerPort: 8001
+          envFrom:
+            - configMapRef:
+                name: recsys-config
+            - secretRef:
+                name: recsys-secrets
+          readinessProbe:
+            httpGet:
+              path: /events/stats
+              port: 8001
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-collector
+  namespace: recsys
+spec:
+  selector:
+    app: event-collector
+  ports:
+    - port: 8001
+      targetPort: 8001

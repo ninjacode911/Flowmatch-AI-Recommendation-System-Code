@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llm-augment-svc
+  namespace: recsys
+  labels:
+    app: llm-augment-svc
+    tier: augmentation
+    app.kubernetes.io/part-of: flowmatch-recsys
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: llm-augment-svc
+  template:
+    metadata:
+      labels:
+        app: llm-augment-svc
+        tier: augmentation
+    spec:
+      containers:
+        - name: llm-augment-svc
+          image: flowmatch-recsys/llm-augment-svc:latest
+          ports:
+            - containerPort: 8004
+          envFrom:
+            - configMapRef:
+                name: recsys-config
+            - secretRef:
+                name: recsys-secrets
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8004
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: llm-augment-svc
+  namespace: recsys
+spec:
+  selector:
+    app: llm-augment-svc
+  ports:
+    - port: 8004
+      targetPort: 8004
