@@ -10,7 +10,7 @@ import urllib.request
 import sys
 from pathlib import Path
 
-REPO = "ninjacode911/Navnit-s-Flowmatch-AI-Recommendation-System"
+REPO = "ninjacode911/Flowmatch-AI-Recommendation-System-Code"
 TAG = "v1.0-models"
 BASE_URL = f"https://github.com/{REPO}/releases/download/{TAG}"
 
